@@ -1,0 +1,415 @@
+#---Imports
+import os
+import time
+import sys
+import webbrowser
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import * 
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QRadioButton, QHBoxLayout, QVBoxLayout, QButtonGroup, QLineEdit, QLabel, QCheckBox
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtGui import * 
+from PIL import Image
+#--Imports
+ 
+#---Application
+app = QApplication([])
+my_win = QWidget()
+my_win.setWindowTitle("Login Page")
+my_win.move(600, 75)
+my_win.resize(500, 200)
+button1 = QPushButton('Login')
+button2 = QPushButton('Register')
+check = QCheckBox('')
+name = QLineEdit ('')
+password = QLineEdit ('')
+password.setEchoMode(QLineEdit.Password)
+
+#---Registration Page
+
+registration = QWidget()
+registration.setWindowTitle("Registration Page")
+button3 = QPushButton('Register')
+button4 = QPushButton('') #show / hide Reg
+button5 = QPushButton('') #show / hide Reg
+button6 = QPushButton('') #show / hide Login
+back = QPushButton('Exit') # Go Back login Page
+registration.move(550, 75)
+registration.resize(620, 200)
+entername = QLineEdit ('')
+enterpass = QLineEdit ('')
+enterpass1 = QLineEdit ('')
+enterpass.setEchoMode(QLineEdit.Password)
+enterpass1.setEchoMode(QLineEdit.Password)
+    
+#Global Varables
+
+show1 = 0 # hide1
+show2 = 0 # hide2
+show3 = 0 # hide3
+infocl = 0 # info button Clicked
+contcl = 0 # Contact Clicked
+
+#---success page
+success = QWidget()
+success.setWindowTitle("Welcome")
+thanks2 = QLabel("")
+thanks3 = QLabel("")
+logoutbutton = QPushButton("Logout")
+infobutton = QPushButton("Information")
+site = QPushButton("My Site")
+Contactbutton = QPushButton("Conntact")
+empty = QLabel ("")
+empty1 = QLabel("")
+empty2 = QLabel ("")
+empty3 = QLabel ("")
+empty4 = QLabel ("")
+empty5 = QLabel ("")
+empty6 = QLabel ("")
+empty7 = QLabel ("")
+empty8 = QLabel ("")
+empty9 = QLabel ("")
+empty10 = QLabel ("")
+empty11 = QLabel ("მოგესალმებით ჩემს პროგრამაში")
+success.move(600, 75)
+success.resize(600, 300)
+site.hide()
+Contactbutton.hide()
+
+#-----------------------------------------------------------------------------------------------------------------#
+#                                                 Def's Start
+
+def saxeli(filename, username):
+    with open('user.txt') as f:
+        lines = [line.rstrip() for line in f]
+    return username in lines   
+
+def paroli(filename, password):
+    with open('pass.txt') as f:
+        lines = [line.rstrip() for line in f]
+    return lines
+
+
+def button_click():
+    print(name.text())
+    print(password.text())
+    answer = saxeli("pass.txt", name.text())
+    if answer:
+        with open('user.txt') as f:
+            lines = [line.rstrip() for line in f]
+        index = findIndex(lines, name.text())
+        parollist = paroli('pass.txt', password)
+        if parollist[index] == password.text():
+            success.setLayout(v_line001)
+            success.show()
+            my_win.hide()
+    else:
+        h_line6.addWidget(Error2, alignment = Qt.AlignCenter)
+
+
+def findIndex(userList, userToFind):
+    indexForPassword = -1
+    for i in range(len(userList)):
+        if userList[i] == userToFind:
+            indexForPassword = i
+            
+    return indexForPassword
+    
+
+def Registration_clicked():
+    registration.setLayout(v_line01)
+    registration.show()
+    my_win.hide()
+
+
+def Register_Confirm():
+    name1 = entername.text()
+    password1 = enterpass.text()
+    password2 = enterpass1.text()
+    print(password1, password2)
+    if password1 != password2:
+        h_line16.addWidget(Error, alignment = Qt.AlignCenter)
+        return registration.setLayout(v_line01)
+    else:   
+        with open('user.txt', "a") as m:
+            m.write('\n')
+            m.write(name1)
+        with open('pass.txt',"a") as n:
+            n.write('\n')
+            n.write(password1)
+    registration.hide()
+    my_win.show()     
+   
+    
+    
+#---Password Hide  /  Show
+
+
+
+def hide1():
+    global show1
+    if button4.clicked:
+        print(show1)
+        if show1 == 0:
+            enterpass.setEchoMode(QLineEdit.Normal)
+            button4.setIcon(QIcon('hide.png'))
+            show1 = 1
+        else:
+            enterpass.setEchoMode(QLineEdit.Password)
+            button4.setIcon(QIcon('show.png'))
+            show1 = 0
+     
+        
+
+def hide2():
+    global show2
+    if button5.clicked:
+        print(show2)
+        if show2 == 0:
+            enterpass1.setEchoMode(QLineEdit.Normal)
+            button5.setIcon(QIcon('hide.png'))
+            show2 = 1
+        else:
+            enterpass1.setEchoMode(QLineEdit.Password)
+            button5.setIcon(QIcon('show.png'))
+            show2 = 0
+
+def hide3():
+    global show3
+    if button6.clicked:
+        print(show3)
+        if show3 == 0:
+            password.setEchoMode(QLineEdit.Normal)
+            button6.setIcon(QIcon('hide.png'))
+            show3 = 1
+        else:
+            password.setEchoMode(QLineEdit.Password)
+            button6.setIcon(QIcon('show.png'))
+            show3 = 0
+        
+
+def logoutbutton_clicked():
+    if logoutbutton_clicked:
+        my_win.show()
+        success.hide()
+    else:
+        print("error")
+
+
+def open_webbrowser():
+        webbrowser.open('https://geotorrentofficial.wixsite.com/geotorrent') # Open Link 
+
+def contact_webbrowser():
+        webbrowser.open('https://www.facebook.com/giorgi.giuashvili.33/')   
+
+
+def infobutton_clicked():
+    global infocl
+    if infobutton.clicked:
+        print(infocl)
+        if infocl == 0:
+            h_line200.addWidget(site, alignment = Qt.AlignRight)
+            h_line300.addWidget(Contactbutton, alignment = Qt.AlignRight)
+            site.show()
+            Contactbutton.show()
+            infocl = 1
+        else:
+            site.hide()
+            Contactbutton.hide()
+            infocl = 0
+
+def regback_clicked():
+        if back.clicked:
+            my_win.show()
+            registration.hide()
+        else:
+            print('error')
+
+#                                                 Def's End
+#-----------------------------------------------------------------------------------------------------------------#
+
+
+#-- Set Icon ( Only Work for button )
+
+button4.setIcon(QIcon('show.png'))
+button5.setIcon(QIcon('show.png'))
+button6.setIcon(QIcon('show.png'))
+# back.setIcon(QIcon('close.png')) #( Exit icon For Register )
+
+#-- Button Connect
+button1.clicked.connect(button_click)
+button2.clicked.connect(Registration_clicked)
+button3.clicked.connect(Register_Confirm)
+button4.clicked.connect(hide1)
+button5.clicked.connect(hide2)
+button6.clicked.connect(hide3)
+logoutbutton.clicked.connect(logoutbutton_clicked)
+site.clicked.connect(open_webbrowser)
+Contactbutton.clicked.connect(contact_webbrowser)
+infobutton.clicked.connect(infobutton_clicked)
+back.clicked.connect(regback_clicked)
+
+
+
+#---Layout's ( Login )
+v_line = QVBoxLayout()
+h_line1 = QHBoxLayout()
+h_line2 = QHBoxLayout()
+h_line3 = QHBoxLayout()
+h_line4 = QHBoxLayout()
+h_line5 = QHBoxLayout()
+h_line6 = QHBoxLayout()
+h_line7 = QHBoxLayout()
+
+#---Layout's ( Register )
+v_line01 = QVBoxLayout()
+h_line11 = QHBoxLayout()
+h_line12 = QHBoxLayout()
+h_line13 = QHBoxLayout()
+h_line14 = QHBoxLayout()
+h_line15 = QHBoxLayout()
+h_line16 = QHBoxLayout()
+h_line17 = QHBoxLayout()
+h_line18 = QHBoxLayout()
+
+#--- Layout's ( success )
+v_line001 = QVBoxLayout()
+h_line100 = QHBoxLayout()
+h_line200 = QHBoxLayout()
+h_line300 = QHBoxLayout()
+h_line400 = QHBoxLayout()
+h_line500 = QHBoxLayout()
+h_line600 = QHBoxLayout()
+h_line700 = QHBoxLayout()
+h_line800 = QHBoxLayout()
+h_line900 = QHBoxLayout()
+h_line1000 = QHBoxLayout()
+h_line1100 = QHBoxLayout()
+
+
+
+
+#--Label's ( Login )
+logintitle = QLabel("გაიარე ავტორიზაცია")
+nametxt = QLabel ("Enter Name: ")
+passwordtxt = QLabel ("Enter Password: ")
+Error = QLabel("Password Didnot match")
+Error2 = QLabel("ასეთი იუზერი არარსებობს ცადე ხელახლა")
+
+#--Label's ( Register )
+registertitle = QLabel("გაიარე რეგისტრაცია")
+regname = QLabel ("Enter Name: ")
+regpass = QLabel ("Enter Password: ")
+regpass1 = QLabel ("Confirm Password: ")
+# h_line = QHBoxLayout()
+
+
+Error.setStyleSheet("color: red; background-color: none; selection-color: none; selection-background-color: none") # Label Color Set 
+
+Error2.setStyleSheet("color: red; background-color: none; selection-color: none; selection-background-color: none") # Label Color Set 
+
+
+
+
+#--Set Size 
+entername.setFixedSize(QtCore.QSize(600, 18))
+enterpass.setFixedSize(QtCore.QSize(500, 18))
+enterpass1.setFixedSize(QtCore.QSize(510, 18))
+button4.setFixedSize(QtCore.QSize(35, 17)) # Normal Size (50, 18)
+button5.setFixedSize(QtCore.QSize(35, 17))
+button6.setFixedSize(QtCore.QSize(35, 17))
+logoutbutton.setFixedSize(QtCore.QSize(80, 25))
+site.setFixedSize(QtCore.QSize(80, 25))
+infobutton.setFixedSize(QtCore.QSize(80, 25)) # large Normal Size (80, 25)
+Contactbutton.setFixedSize(QtCore.QSize(80, 25))
+back.setFixedSize(QtCore.QSize(80, 20))
+
+
+
+
+#-- Login Page
+h_line2.addWidget(nametxt, alignment = Qt.AlignCenter)
+h_line3.addWidget(passwordtxt, alignment = Qt.AlignCenter)
+h_line1.addWidget(logintitle, alignment = Qt.AlignCenter)
+h_line4.addWidget(button1, alignment = Qt.AlignCenter)
+h_line5.addWidget(button2, alignment = Qt.AlignRight)
+h_line2.addWidget(name)
+h_line3.addWidget(password)
+h_line3.addWidget(button6)
+
+
+
+#-- Register Page
+h_line11.addWidget(registertitle, alignment = Qt.AlignCenter)
+h_line12.addWidget(regname, alignment = Qt.AlignRight)
+h_line12.addWidget(entername, alignment = Qt.AlignLeft)
+h_line13.addWidget(regpass, alignment = Qt.AlignRight)
+h_line13.addWidget(enterpass, alignment = Qt.AlignCenter)
+h_line13.addWidget(button4, alignment = Qt.AlignLeft)
+h_line14.addWidget(regpass1, alignment = Qt.AlignLeft)
+h_line14.addWidget(enterpass1, alignment = Qt.AlignCenter)
+h_line17.addWidget(back, alignment = Qt.AlignRight)
+h_line14.addWidget(button5, alignment = Qt.AlignLeft)
+h_line15.addWidget(button3, alignment = Qt.AlignCenter)
+
+
+
+#-- Succsess Page
+h_line100.addWidget(infobutton, alignment = Qt.AlignRight)
+h_line400.addWidget(empty2, alignment = Qt.AlignCenter)
+h_line500.addWidget(empty3, alignment = Qt.AlignCenter)
+h_line600.addWidget(logoutbutton, alignment = Qt.AlignRight)
+
+
+
+
+
+
+#---Addlayout's ( Login )
+v_line.addLayout(h_line1)
+v_line.addLayout(h_line2)
+v_line.addLayout(h_line3)
+v_line.addLayout(h_line4)
+v_line.addLayout(h_line5)
+v_line.addLayout(h_line6)
+v_line.addLayout(h_line7)
+
+#---Addlayout's ( Register )
+v_line01.addLayout(h_line11)
+v_line01.addLayout(h_line12)
+v_line01.addLayout(h_line13)
+v_line01.addLayout(h_line14)
+v_line01.addLayout(h_line15)
+v_line01.addLayout(h_line16)
+v_line01.addLayout(h_line17)
+
+
+#--Addlayout's ( Succsess )
+v_line001.addLayout(h_line100)
+v_line001.addLayout(h_line200)
+v_line001.addLayout(h_line300)
+v_line001.addLayout(h_line400)
+v_line001.addLayout(h_line500)
+v_line001.addLayout(h_line600)
+             
+
+my_win.setWindowIcon(QtGui.QIcon('WinImage.png'))
+registration.setWindowIcon(QtGui.QIcon('WinImage.png'))
+success.setWindowIcon(QtGui.QIcon('WinImage.png'))
+#--Application
+
+
+#---Main 
+# success.setStyleSheet("background-image : url(316929.jpg);") ( set background )
+my_win.setLayout(v_line)
+my_win.show()
+app.exec_()
+#--Main 
+
+
+
+
+# label_1.setFont(QFont('Arial', 10))    --  ( Set Font's)
+# buttonname.setFixedSize(QtCore.QSize(80, 25)) -- ( Set Button Size)  ( Large Normal = 80, 25) ( Small Normal = 50, 18)
+# LabelName.setStyleSheet("color: red; background-color: none; selection-color: none; selection-background-color: none") --  Label Color Set
+# windowname.setWindowIcon(QtGui.QIcon('imagename')) ( Icon set on window)
